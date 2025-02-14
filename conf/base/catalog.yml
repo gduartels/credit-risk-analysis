@@ -13,3 +13,7 @@ pagamentos_desenvolvimento:
 pagamentos_teste:
   type: pandas.CSVDataset
   filepath: data/01_raw/base_pagamentos_teste.csv
+
+raw_data:
+  type: pandas.CSVDataset
+  filepath: data/01_raw/raw_data.csv
