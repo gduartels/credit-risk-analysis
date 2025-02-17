@@ -23,3 +23,21 @@ def join_data(
     )
 
     return df_completo
+
+def filter_pj_data(
+    raw_data: pd.DataFrame
+) -> pd.DataFrame:
+    """Mantém apenas os registros de clientes PJ da base.
+
+    Args:
+        raw_data: Tabela unindo todas as informações separadas
+    Returns:
+        df_pj: Tabela contendo apenas documentos de clientes PJ
+    """
+    df_pj = (
+        raw_data
+        .query('FLAG_PF.isna()')
+        .reset_index(drop=True)
+    )
+
+    return df_pj
