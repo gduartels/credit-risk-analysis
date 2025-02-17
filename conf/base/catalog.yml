@@ -17,3 +17,15 @@ pagamentos_teste:
 raw_data:
   type: pandas.CSVDataset
   filepath: data/01_raw/raw_data.csv
+
+pj_data:
+  type: pandas.CSVDataset
+  filepath: data/02_intermediate/pj_data.csv
+
+clean_data:
+  type: pandas.CSVDataset
+  filepath: data/02_intermediate/clean_data.csv
+
+features_data:
+  type: pandas.CSVDataset
+  filepath: data/04_feature/features.csv

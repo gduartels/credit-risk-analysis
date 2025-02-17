@@ -1,6 +1,12 @@
 import pandas as pd
 import numpy as np
+import re
 
+def _check_2DIG(x:str):
+    if x and re.match(r"^[0-9]{2}$", x):
+        return x
+    else:
+     return None
 
 def join_data(
     base_pagamentos: pd.DataFrame,
@@ -42,6 +48,34 @@ def filter_pj_data(
     )
 
     return df_pj
+
+def clean_data(
+    df: pd.DataFrame
+) -> pd.DataFrame:
+    """Realiza os tratamentos para limpeza da base.
+
+    Args:
+        df: Tabela contendo as informações de pagamento
+    Returns:
+        df_cleaned: Tabela limpa 
+    """
+
+    df_cleaned = (
+        df
+        .assign(
+            DDD = lambda df: df['DDD'].astype(str).apply(_check_2DIG).fillna('NA'),
+            SEGMENTO_INDUSTRIAL = lambda df: df['SEGMENTO_INDUSTRIAL'].map(
+                {'Serviços':'SERVICOS', 'Comércio':'COMERCIO', 'Indústria':'INDUSTRIA'}).fillna('NA'),
+            DOMINIO_EMAIL = lambda df: df['DOMINIO_EMAIL'].map(
+                {'YAHOO':'YAHOO', 'HOTMAIL':'HOTMAIL', 'OUTLOOK':'OUTLOOK', 
+                 'GMAIL':'GMAIL','BOL':'BOL','AOL':'AOL'}).fillna('NA'),
+            PORTE = lambda df: df['DOMINIO_EMAIL'].map(
+                {'PEQUENO':'PEQUENO', 'MEDIO':'MEDIO', 'GRANDE':'GRANDE'}).fillna('NA'),
+            CEP_2_DIG = lambda df: df['CEP_2_DIG'].astype(str).apply(_check_2DIG).fillna('NA')
+        )
+    )
+
+    return df_cleaned
 
 def create_features(
     df: pd.DataFrame
