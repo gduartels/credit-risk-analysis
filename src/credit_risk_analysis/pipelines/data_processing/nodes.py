@@ -69,7 +69,7 @@ def clean_data(
             DOMINIO_EMAIL = lambda df: df['DOMINIO_EMAIL'].map(
                 {'YAHOO':'YAHOO', 'HOTMAIL':'HOTMAIL', 'OUTLOOK':'OUTLOOK', 
                  'GMAIL':'GMAIL','BOL':'BOL','AOL':'AOL'}).fillna('NA'),
-            PORTE = lambda df: df['DOMINIO_EMAIL'].map(
+            PORTE = lambda df: df['PORTE'].map(
                 {'PEQUENO':'PEQUENO', 'MEDIO':'MEDIO', 'GRANDE':'GRANDE'}).fillna('NA'),
             CEP_2_DIG = lambda df: df['CEP_2_DIG'].astype(str).apply(_check_2DIG).fillna('NA')
         )
