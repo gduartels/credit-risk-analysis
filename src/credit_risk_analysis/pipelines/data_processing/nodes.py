@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 
 
 def join_data(
@@ -41,3 +42,29 @@ def filter_pj_data(
     )
 
     return df_pj
+
+def create_features(
+    df: pd.DataFrame
+) -> pd.DataFrame:
+    """
+    Cria novas variáveis para o modelo.
+
+    Args:
+        df: Tabela contendo as informações de pagamento
+    Returns:
+        df_features: Tabela com features criadas
+    """
+
+    df_features = (
+        df
+        .assign(
+            RZ_RENDA_FUNC = lambda df: df[['RENDA_MES_ANTERIOR','NO_FUNCIONARIOS']].apply(
+                lambda x: x[0]/x[1] if x[1]> 0 else np.nan, axis=1
+            ),
+            VL_TAXA = lambda df: df[['TAXA','VALOR_A_PAGAR']].apply(
+                lambda x: (x[0]/100)*x[1] if x[1]> 0 else np.nan, axis=1
+            )
+        )
+    )
+
+    return df_features

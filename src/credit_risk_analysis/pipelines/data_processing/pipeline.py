@@ -1,6 +1,6 @@
 from kedro.pipeline import Pipeline, node, pipeline
 
-from .nodes import join_data, filter_pj_data
+from .nodes import join_data, filter_pj_data, create_features
 
 
 def create_pipeline(**kwargs) -> Pipeline:
@@ -18,5 +18,11 @@ def create_pipeline(**kwargs) -> Pipeline:
                 outputs="pj_data",
                 name="filter_data_node",
             ),
+            node(
+                func=create_features,
+                inputs="pj_data",
+                outputs="features_data",
+                name="create_features_node",
+            )
         ]
     )
