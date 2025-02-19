@@ -8,7 +8,7 @@ def create_pipeline(**kwargs) -> Pipeline:
         [
             node(
                 func=create_target,
-                inputs="clean_data",
+                inputs="features_data",
                 outputs="spine",
                 name="create_target_node"
             )

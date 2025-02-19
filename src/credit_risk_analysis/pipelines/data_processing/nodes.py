@@ -45,6 +45,7 @@ def filter_pj_data(
         raw_data
         .query('FLAG_PF.isna()')
         .reset_index(drop=True)
+        .drop(columns=['FLAG_PF'])
     )
 
     return df_pj
