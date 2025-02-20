@@ -1,12 +1,30 @@
-model_options:
-  test_size: 0.2
-  random_state: 3
-  features:
-    - engines
-    - passenger_capacity
-    - crew
-    - d_check_complete
-    - moon_clearance_complete
-    - iata_approved
-    - company_rating
-    - review_scores_rating
+modeling:
+  split_column: 'SAFRA_REF'
+  split_cohort: '2021-03'
+  target_name: 'FLAG_MAU'
+  random_state_split: 111
+  random_state_model: 1111
+
+  features_selected:
+    - VALOR_A_PAGAR
+    - TAXA
+    - RENDA_MES_ANTERIOR
+    - RZ_RENDA_FUNC
+    - VL_TAXA
+    - DOMINIO_EMAIL
+    - PORTE
+    - CEP_2_DIG
+  categorical_features:
+    - DOMINIO_EMAIL
+    - PORTE
+    - CEP_2_DIG
+
+  hyperparameters:
+    learning_rate: 0.06409200096796018
+    depth: 3
+    l2_leaf_reg: 2.470378349559226e-07
+    bootstrap_type: 'Bayesian'
+    random_strength: 2.226266870634716
+    auto_class_weights: 'Balanced'
+    od_type: 'Iter'
+    od_wait: 137

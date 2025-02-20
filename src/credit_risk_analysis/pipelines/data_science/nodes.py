@@ -1,9 +1,9 @@
 import logging
 
 import pandas as pd
-# from sklearn.linear_model import LinearRegression
-# from sklearn.metrics import r2_score
-# from sklearn.model_selection import train_test_split
+from typing import List, Dict
+from sklearn.model_selection import train_test_split
+from catboost import CatBoostClassifier
 
 
 def create_target(
@@ -29,36 +29,47 @@ def create_target(
 
     return df_target
 
-# def split_data(data: pd.DataFrame, parameters: dict) -> tuple:
-#     """Splits data into features and targets training and test sets.
+def split_data(data: pd.DataFrame, 
+               split_column: str, split_cohort: str, 
+               features: List, target: str,
+               random_state: int = 42) -> tuple:
+    """Separa os dados em features e targets e conjuntos de treino e validação.
+    
+    Args:
+        data: Data containing features and target.
+        split_cohort: Parameters defined in parameters/data_science.yml.
+    Returns:
+        Split data.
+    """
+    df_dev = data[data[split_column] < split_cohort].copy()
+    df_oot = data[data[split_column] >= split_cohort].copy()
 
-#     Args:
-#         data: Data containing features and target.
-#         parameters: Parameters defined in parameters/data_science.yml.
-#     Returns:
-#         Split data.
-#     """
-#     X = data[parameters["features"]]
-#     y = data["price"]
-#     X_train, X_test, y_train, y_test = train_test_split(
-#         X, y, test_size=parameters["test_size"], random_state=parameters["random_state"]
-#     )
-#     return X_train, X_test, y_train, y_test
+    df_treino, df_teste = train_test_split(df_dev, test_size=0.3, random_state=random_state)
+    
+    X_train, y_train = df_treino[features], df_treino[target]
+    X_test, y_test = df_teste[features], df_teste[target]
+    X_val_oot, y_val_oot = df_oot[features], df_oot[target]
+
+    return X_train, X_test, X_val_oot, y_train, y_test, y_val_oot
 
 
-# def train_model(X_train: pd.DataFrame, y_train: pd.Series) -> LinearRegression:
-#     """Trains the linear regression model.
+def train_model(X_train: pd.DataFrame, y_train: pd.Series,
+                parameters: Dict, cat_features: List, random_state: int) -> CatBoostClassifier:
+    """Treina o modelo catboost.
 
-#     Args:
-#         X_train: Training data of independent features.
-#         y_train: Training data for price.
+    Args:
+        X_train: Dados de treinamento de pagamento.
+        y_train: Target do modelo 'FLAG_MAU', que representa um atraso acima de 5 dias.
 
-#     Returns:
-#         Trained model.
-#     """
-#     regressor = LinearRegression()
-#     regressor.fit(X_train, y_train)
-#     return regressor
+    Returns:
+        Trained model.
+    """
+    model_final = CatBoostClassifier(**parameters,
+                                     cat_features = cat_features, 
+                                     verbose=False, 
+                                     random_state = random_state)
+    model_final.fit(X_train, y_train)
+    return model_final
 
 
 # def evaluate_model(

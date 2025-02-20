@@ -33,3 +33,31 @@ features_data:
 spine:
   type: pandas.ParquetDataset
   filepath: data/04_feature/spine.parquet
+
+X_train:
+  type: pandas.ParquetDataset
+  filepath: data/05_model_input/X_train.parquet
+
+X_test:
+  type: pandas.ParquetDataset
+  filepath: data/05_model_input/X_test.parquet
+
+X_val_oot:
+  type: pandas.ParquetDataset
+  filepath: data/05_model_input/X_val_oot.parquet
+
+y_train:
+  type: pandas.CSVDataset
+  filepath: data/05_model_input/y_train.csv
+
+y_test:
+  type: pandas.CSVDataset
+  filepath: data/05_model_input/y_test.csv
+
+y_val_oot:
+  type: pandas.CSVDataset
+  filepath: data/05_model_input/y_val_oot.csv
+
+model:
+  type: pickle.PickleDataset
+  filepath: data/06_models/catboost_model.pkl
