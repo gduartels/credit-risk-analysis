@@ -14,6 +14,12 @@ data/**
 # except their sub-folders
 !data/**/
 
+!data/01_raw/base_cadastral.csv
+!data/01_raw/base_info.csv
+!data/01_raw/base_pagamentos_desenvolvimento.csv
+!data/01_raw/base_pagamentos_teste.csv
+
+
 # also keep all .gitkeep files
 !.gitkeep
 
