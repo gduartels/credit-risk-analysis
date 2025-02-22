@@ -65,3 +65,30 @@ kedro run --namespace=modeling
 kedro run --namespace=scoring
 ```
 
+---
+
+## 🛠️ Como Utilizar
+
+### Pipelines Principais
+
+- **Processamento de Dados**:
+```bash
+kedro run --pipeline data_processing
+```
+- **Treinamento do Modelo:**
+```bash
+kedro run --pipeline data_science
+```
+- **Escoragem dos Dados de Teste:**
+```bash
+kedro run --pipeline scoring
+```
+
+### Saídas Geradas
+
+- **Modelo Treinado**: `data/06_models/catboost_model.pkl`
+- **Previsões finais**: `data/07_model_output/scored_output.parquet`
+- **Métricas**: `data/06_models/metrics.csv`
+- **Gráficos**: Ordenação dos ratings (`data/06_models/ratings_ordenation.png`) e SHAP summary plot (`data/06_models/shap_summary_plot.png`)
+
+
