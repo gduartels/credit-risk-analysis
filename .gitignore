@@ -14,11 +14,13 @@ data/**
 # except their sub-folders
 !data/**/
 
+# important data to publish
 !data/01_raw/base_cadastral.csv
 !data/01_raw/base_info.csv
 !data/01_raw/base_pagamentos_desenvolvimento.csv
 !data/01_raw/base_pagamentos_teste.csv
-
+!data/06_models/ratings_ordenation.png
+!data/06_models/shap_summary_plot.png
 
 # also keep all .gitkeep files
 !.gitkeep
