@@ -40,3 +40,28 @@ Este repositório contém a solução para um case técnico, focado na construç
 - **Etapas**:
   - `modeling`: Raw Data → Joined Data → Filtered Data → Cleaned Data → Features Data → Spine → Trained Model
   - `scoring`: Raw Data → Joined Data → Filtered Data → Cleaned Data → Features Data → Model Output
+
+---
+
+## ⚙️ Instalação
+
+1. **Clonar o repositório**:
+```bash
+git clone https://github.com/seu-usuario/credit-risk-analysis.git
+cd credit-risk-analysis
+```
+2. **Criar ambiente virtual e instalar dependências:**
+```bash
+python -m venv venv
+source venv/bin/activate  # Linux/Mac
+pip install -r requirements.txt
+```
+3. **Executar o pipeline de criação do modelo:**
+```bash
+kedro run --namespace=modeling
+```
+4. **Executar o pipeline de consumo do modelo:**
+```bash
+kedro run --namespace=scoring
+```
+
