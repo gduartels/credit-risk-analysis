@@ -6,7 +6,7 @@
 ![SHAP](https://img.shields.io/badge/SHAP-0.46.0-red)
 
 **Projeto de Modelagem Preditiva para Inadimplência de Crédito**  
-Este repositório contém a solução para o case técnico da Datarisk, focado na construção de um modelo de machine learning para prever a probabilidade de inadimplência de clientes. O projeto utiliza uma estrutura modular com Kedro e técnicas avançadas de feature engineering e interpretabilidade de modelos.
+Este repositório contém a solução para um case técnico, focado na construção de um modelo de machine learning para prever a probabilidade de inadimplência de clientes. O projeto utiliza uma estrutura modular com Kedro e técnicas avançadas de feature engineering e interpretabilidade de modelos.
 
 ---
 
@@ -20,3 +20,23 @@ Este repositório contém a solução para o case técnico da Datarisk, focado n
 - **Validação Robusta**: Separação temporal (out-of-time) e métricas de avaliação detalhadas.
 
 ---
+
+## 📂 Estrutura do Projeto
+
+```plaintext
+.
+├── conf/           # Configurações do Kedro (catálogo, parâmetros)
+├── data/           # Dados em estágios (raw → model_output)
+├── notebooks/      # Análises exploratórias e experimentos
+├── src/            # Pipelines (processamento, modelagem, scoring)
+├── tests/          # Testes unitários
+└── requirements.txt
+```
+
+### Catálogo de Dados (Kedro)
+- **Namespaces**:
+  - `modeling`: Dados de desenvolvimento (`base_pagamentos_desenvolvimento.csv`)
+  - `scoring`: Dados de teste (`base_pagamentos_teste.csv`)
+- **Etapas**:
+  - `modeling`: Raw Data → Joined Data → Filtered Data → Cleaned Data → Features Data → Spine → Trained Model
+  - `scoring`: Raw Data → Joined Data → Filtered Data → Cleaned Data → Features Data → Model Output
