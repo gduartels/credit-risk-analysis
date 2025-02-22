@@ -3,3 +3,10 @@
 #
 # Documentation for this file format can be found in "Parameters"
 # Link: https://docs.kedro.org/en/0.19.11/configuration/parameters.html
+scoring:
+  id_columns:
+    - ID_CLIENTE
+    - SAFRA_REF
+    - DATA_EMISSAO_DOCUMENTO
+    - DATA_VENCIMENTO
+    

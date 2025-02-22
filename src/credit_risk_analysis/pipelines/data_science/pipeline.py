@@ -4,7 +4,7 @@ from .nodes import create_target, split_data, train_model, evaluate_model
 
 
 def create_pipeline(**kwargs) -> Pipeline:
-    return pipeline(
+    pipe_template = pipeline(
         [
             node(
                 func=create_target,
@@ -40,3 +40,19 @@ def create_pipeline(**kwargs) -> Pipeline:
             ),
         ]
     )
+
+    return pipeline(
+        pipe_template,
+        namespace="modeling",
+        parameters={
+            "params:modeling.split_column",
+            "params:modeling.split_cohort",
+            "params:modeling.features_selected", 
+            "params:modeling.target_name",
+            "params:modeling.random_state_split",
+            "params:modeling.hyperparameters", 
+            "params:modeling.categorical_features",
+            "params:modeling.random_state_model"
+        }
+    )
+

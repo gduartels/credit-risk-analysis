@@ -38,50 +38,54 @@ scoring.pagamentos:
   type: pandas.ParquetDataset
   filepath: data/04_feature/{namespace}/features.parquet
 
-spine:
+modeling.spine:
   type: pandas.ParquetDataset
   filepath: data/04_feature/spine.parquet
 
-X_train:
+modeling.X_train:
   type: pandas.ParquetDataset
   filepath: data/05_model_input/X_train.parquet
 
-X_test:
+modeling.X_test:
   type: pandas.ParquetDataset
   filepath: data/05_model_input/X_test.parquet
 
-X_val_oot:
+modeling.X_val_oot:
   type: pandas.ParquetDataset
   filepath: data/05_model_input/X_val_oot.parquet
 
-y_train:
+modeling.y_train:
   type: pandas.CSVDataset
   filepath: data/05_model_input/y_train.csv
 
-y_test:
+modeling.y_test:
   type: pandas.CSVDataset
   filepath: data/05_model_input/y_test.csv
 
-y_val_oot:
+modeling.y_val_oot:
   type: pandas.CSVDataset
   filepath: data/05_model_input/y_val_oot.csv
 
-model:
+modeling.model:
   type: pickle.PickleDataset
   filepath: data/06_models/catboost_model.pkl
 
-model_metrics:
+scoring.model:
+  type: pickle.PickleDataset
+  filepath: data/06_models/catboost_model.pkl
+
+modeling.model_metrics:
   type: pandas.CSVDataset
   filepath: data/06_models/metrics.csv
 
-ratings_ordenation:
+modeling.ratings_ordenation:
   type: matplotlib.MatplotlibWriter
   filepath: data/06_models/ratings_ordenation.png
 
-model_shap:
+modeling.model_shap:
   type: matplotlib.MatplotlibWriter
   filepath: data/06_models/shap_summary_plot.png
 
-scored_output:
+scoring.output:
   type: pandas.ParquetDataset
   filepath: data/07_model_output/scored_output.parquet
