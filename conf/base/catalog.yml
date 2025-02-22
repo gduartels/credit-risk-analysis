@@ -61,3 +61,7 @@ y_val_oot:
 model:
   type: pickle.PickleDataset
   filepath: data/06_models/catboost_model.pkl
+
+model_metrics:
+  type: pandas.CSVDataset
+  filepath: data/06_models/metrics.csv
