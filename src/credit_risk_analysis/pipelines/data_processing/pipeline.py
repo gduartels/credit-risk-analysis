@@ -4,11 +4,11 @@ from .nodes import join_data, filter_pj_data, clean_data, create_features
 
 
 def create_pipeline(**kwargs) -> Pipeline:
-    return pipeline(
+    pipe_template = pipeline(
         [
             node(
                 func=join_data,
-                inputs=["pagamentos_desenvolvimento", "cadastral", "info"],
+                inputs=["pagamentos", "cadastral", "info"],
                 outputs="raw_data",
                 name="join_data_node",
             ),
@@ -31,4 +31,18 @@ def create_pipeline(**kwargs) -> Pipeline:
                 name="create_features_node",
             )
         ]
+    )
+
+    modeling_pipe = pipeline(
+        pipe_template,
+        namespace="modeling",
+    )
+    scoring_pipe = pipeline(
+        pipe_template,
+        namespace="scoring"
+    )
+
+    return (
+        modeling_pipe +
+        scoring_pipe
     )

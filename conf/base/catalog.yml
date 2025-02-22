@@ -1,34 +1,42 @@
-cadastral:
+modeling.cadastral:
   type: pandas.CSVDataset
   filepath: data/01_raw/base_cadastral.csv
 
-info:
+modeling.info:
   type: pandas.CSVDataset
   filepath: data/01_raw/base_info.csv
 
-pagamentos_desenvolvimento:
+scoring.cadastral:
+  type: pandas.CSVDataset
+  filepath: data/01_raw/base_cadastral.csv
+
+scoring.info:
+  type: pandas.CSVDataset
+  filepath: data/01_raw/base_info.csv
+
+modeling.pagamentos:
   type: pandas.CSVDataset
   filepath: data/01_raw/base_pagamentos_desenvolvimento.csv
 
-pagamentos_teste:
+scoring.pagamentos:
   type: pandas.CSVDataset
   filepath: data/01_raw/base_pagamentos_teste.csv
 
-raw_data:
+"{namespace}.raw_data":
   type: pandas.ParquetDataset
-  filepath: data/01_raw/raw_data.parquet
+  filepath: data/01_raw/{namespace}/raw_data.parquet
 
-pj_data:
+"{namespace}.pj_data":
   type: pandas.ParquetDataset
-  filepath: data/02_intermediate/pj_data.parquet
+  filepath: data/02_intermediate/{namespace}/pj_data.parquet
 
-clean_data:
+"{namespace}.clean_data":
   type: pandas.ParquetDataset
-  filepath: data/02_intermediate/clean_data.parquet
+  filepath: data/02_intermediate/{namespace}/clean_data.parquet
 
-features_data:
+"{namespace}.features_data":
   type: pandas.ParquetDataset
-  filepath: data/04_feature/features.parquet
+  filepath: data/04_feature/{namespace}/features.parquet
 
 spine:
   type: pandas.ParquetDataset
@@ -73,3 +81,7 @@ ratings_ordenation:
 model_shap:
   type: matplotlib.MatplotlibWriter
   filepath: data/06_models/shap_summary_plot.png
+
+scored_output:
+  type: pandas.ParquetDataset
+  filepath: data/07_model_output/scored_output.parquet
