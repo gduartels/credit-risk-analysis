@@ -91,4 +91,24 @@ kedro run --pipeline scoring
 - **Métricas**: `data/06_models/metrics.csv`
 - **Gráficos**: Ordenação dos ratings (`data/06_models/ratings_ordenation.png`) e SHAP summary plot (`data/06_models/shap_summary_plot.png`)
 
+## 📊 Resultados e Métricas
 
+### Desempenho do Modelo
+
+| Métrica       | Treino  | Teste     | Validação Out-of-Time |
+|---------------|---------|-----------|-----------------------|
+| **AUC-ROC**   | 0.94    | 0.92      | 0.90                  |
+| **KS**        | 0.73    | 0.70      | 0.69                  |
+
+### Ordenação da inadimplência nos ratings
+
+![Gráfico de ordenação](data/06_models/ratings_ordenation.png)
+
+### Insights Chave (SHAP)
+
+![Interpretabilidade de variáveis](data/06_models/shap_summary_plot.png)
+
+- **Variáveis mais importantes**:
+  1. `CEP_2_DIG` (2 primeiros dígitos do CEP do cliente)
+  2. `VALOR_A_PAGAR` (valor do documento a ser pago)
+  3. `RENDA_MES_ANTERIOR` (renda do cliente)
