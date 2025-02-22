@@ -91,6 +91,8 @@ kedro run --pipeline scoring
 - **Métricas**: `data/06_models/metrics.csv`
 - **Gráficos**: Ordenação dos ratings (`data/06_models/ratings_ordenation.png`) e SHAP summary plot (`data/06_models/shap_summary_plot.png`)
 
+---
+
 ## 📊 Resultados e Métricas
 
 ### Desempenho do Modelo
@@ -112,3 +114,12 @@ kedro run --pipeline scoring
   1. `CEP_2_DIG` (2 primeiros dígitos do CEP do cliente)
   2. `VALOR_A_PAGAR` (valor do documento a ser pago)
   3. `RENDA_MES_ANTERIOR` (renda do cliente)
+
+
+---
+
+📧 Contato
+
+**Guilherme Duarte Laurindo de Souza**
+<guiduartelsouza@gmail.com>
+[LinkedIn](https://www.linkedin.com/in/guilherme-duarte-aa312925b/)
