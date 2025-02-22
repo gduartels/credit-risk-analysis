@@ -1,6 +1,5 @@
-import logging
-
 import pandas as pd
+import numpy as np
 from typing import List, Dict, Tuple
 from sklearn.model_selection import train_test_split
 from catboost import CatBoostClassifier
@@ -8,6 +7,8 @@ from sklearn.metrics import (
     roc_auc_score, accuracy_score, precision_score, recall_score, f1_score
 )
 from credit_risk_analysis.utils.utils import ks_score
+import shap
+import matplotlib.pyplot as plt
 
 
 def create_target(
@@ -86,8 +87,79 @@ def _return_metrics(
     rec = recall_score(df['TARGET'], df['PRED'])
     f1 = f1_score(df['TARGET'], df['PRED'])
     return auc, ks/100, acc, pr, rec, f1
-    
 
+def _ordenation_graph(
+    df_train, df_test, df_val_oot, plot_train=True
+)-> plt.Figure:
+
+    df_train['RATING'] = pd.cut(df_train['SCORE'],bins=np.linspace(0,1000,11))
+    df_test['RATING'] = pd.cut(df_test['SCORE'],bins=np.linspace(0,1000,11))
+    df_val_oot['RATING'] = pd.cut(df_val_oot['SCORE'],bins=np.linspace(0,1000,11))
+    
+    if plot_train:
+        fig, axs = plt.subplots(1, 3, figsize=(15, 6), sharey=True)
+        df_train.groupby('RATING')['TARGET'].mean().sort_index().plot.bar(ax=axs[0], title='Treino')
+        df_test.groupby('RATING')['TARGET'].mean().sort_index().plot.bar(ax=axs[1], title='Teste')
+        df_val_oot.groupby('RATING')['TARGET'].mean().sort_index().plot.bar(ax=axs[2], title='Validação Out-of-Time')
+    else:
+        fig, axs = plt.subplots(1, 2, figsize=(10, 6), sharey=True)
+        df_test.groupby('RATING')['TARGET'].mean().sort_index().plot.bar(ax=axs[0], title='Teste')
+        df_val_oot.groupby('RATING')['TARGET'].mean().sort_index().plot.bar(ax=axs[1], title='Validação Out-of-Time')
+
+    axs[0].set_ylabel('Inadimplência')
+    plt.tight_layout()
+
+    return fig
+
+
+def _calculate_shap_values(model, X):
+    explainer = shap.TreeExplainer(model)
+    shap_values = explainer.shap_values(X)
+    expected_value = explainer.expected_value
+
+    return expected_value, shap_values
+
+def _beeswarm_from_shap_values(shap_values, X):
+    shap.summary_plot(shap_values, X, show=False,
+                      title='', plot_size=None)
+    
+def _shap_graph(model, X_train, X_test, X_val_oot, 
+                plot_train=True) -> plt.Figure:
+    
+    X_train_transformed = X_train.copy()
+    X_test_transformed = X_test.copy()
+    X_val_oot_transformed = X_val_oot.copy()
+    model_aux = model.copy()
+
+    if plot_train:
+        dict_data = {'Treino': X_train_transformed, 
+                     'Teste': X_test_transformed,
+                     'Validação': X_val_oot_transformed}
+    else:
+        dict_data = {'Teste': X_test_transformed,
+                     'Validação': X_val_oot_transformed}
+
+    dict_exp_shap_values = dict()
+    for name, X in dict_data.items():
+        expected_value, shap_values = (
+            _calculate_shap_values(model_aux, X)
+        )
+        dict_exp_shap_values[name] = (X, expected_value, shap_values)
+    
+    n_rows = 1
+    n_cols = len(dict_data.keys())
+
+    fig = plt.figure(figsize=(int(10 * n_cols), 6))
+    for i, name  in enumerate(list(dict_exp_shap_values.keys()), start=1):
+        ax = plt.subplot(n_rows,n_cols,i)
+        X, expected_value, shap_values = dict_exp_shap_values[name]
+        _beeswarm_from_shap_values(shap_values, X)
+        ax.set_title(f'Valores SHAP ({name})')
+        ax.set_xlabel('')
+    
+    plt.tight_layout()
+    
+    return fig
 
 def evaluate_model(
     model: CatBoostClassifier, 
@@ -113,15 +185,18 @@ def evaluate_model(
 
     df_train = df_train.assign(
         PRED = lambda df: model.predict(df[features]),
-        PROB = lambda df: model.predict_proba(df[features])[:, 1]
+        PROB = lambda df: model.predict_proba(df[features])[:, 1],
+        SCORE = lambda df: (1 - df.PROB) * 1000
     )
     df_test = df_test.assign(
         PRED = lambda df: model.predict(df[features]),
-        PROB = lambda df: model.predict_proba(df[features])[:, 1]
+        PROB = lambda df: model.predict_proba(df[features])[:, 1],
+        SCORE = lambda df: (1 - df.PROB) * 1000
     )
     df_val_oot = df_val_oot.assign(
         PRED = lambda df: model.predict(df[features]),
-        PROB = lambda df: model.predict_proba(df[features])[:, 1]
+        PROB = lambda df: model.predict_proba(df[features])[:, 1],
+        SCORE = lambda df: (1 - df.PROB) * 1000
     )
     auc_train, ks_train, acc_train, pr_train, rec_train, f1_train = _return_metrics(df_train)
     auc_test, ks_test, acc_test, pr_test, rec_test, f1_test = _return_metrics(df_test)
@@ -138,4 +213,7 @@ def evaluate_model(
     })
     df_metrics.index = ['Treino', 'Teste', 'Validação Out-of-Time']
 
-    return df_metrics
+    fig_ordenation = _ordenation_graph(df_train, df_test, df_val_oot)
+    fig_shap = _shap_graph(model, X_train, X_test, X_val_oot)
+
+    return df_metrics, fig_ordenation, fig_shap

@@ -35,7 +35,7 @@ def create_pipeline(**kwargs) -> Pipeline:
                 inputs=["model", "params:modeling.features_selected", 
                         "X_train", "X_test", "X_val_oot",
                         "y_train", "y_test", "y_val_oot"],
-                outputs="model_metrics",
+                outputs=["model_metrics", "ratings_ordenation", "model_shap"],
                 name="evaluate_model_node",
             ),
         ]

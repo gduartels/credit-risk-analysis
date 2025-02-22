@@ -65,3 +65,11 @@ model:
 model_metrics:
   type: pandas.CSVDataset
   filepath: data/06_models/metrics.csv
+
+ratings_ordenation:
+  type: matplotlib.MatplotlibWriter
+  filepath: data/06_models/ratings_ordenation.png
+
+model_shap:
+  type: matplotlib.MatplotlibWriter
+  filepath: data/06_models/shap_summary_plot.png
